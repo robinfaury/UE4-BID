@@ -68,6 +68,28 @@ void APlayerPawn::MoveDownUp(float amount)
 	PlayerCamera->SetWorldLocation(PlayerCamera->GetComponentLocation() + FVector::UpVector*amount*100.0f);
 }
 
+void APlayerPawn::DoAction() 
+{
+	if (grabbedObject != nullptr) 
+	{
+		Cast<UPrimitiveComponent>(grabbedObject->GetRootComponent())->SetSimulatePhysics(true);
+		grabbedObject->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		grabbedObject = nullptr;
+	}
+	else
+	{
+		if (touchedActor != nullptr) // add something ! 
+		{
+			if (UPrimitiveComponent* P = Cast<UPrimitiveComponent>(touchedActor->GetRootComponent())) 
+			{
+				P->SetSimulatePhysics(false);
+				touchedActor->AttachToComponent(PlayerCamera, FAttachmentTransformRules::KeepWorldTransform);
+				grabbedObject = touchedActor;
+			}
+		}
+	}
+}
+
 
 
 // Called when the game starts or when spawned
@@ -107,5 +129,5 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("MoveX", this, &ThisClass::MoveX);
 	PlayerInputComponent->BindAxis("MoveY", this, &ThisClass::MoveY);
 	PlayerInputComponent->BindAxis("MoveDownUp", this, &ThisClass::MoveDownUp);
-	
+	PlayerInputComponent->BindAction("DoAction", IE_Pressed ,this, &ThisClass::DoAction);
 }

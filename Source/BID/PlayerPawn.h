@@ -20,18 +20,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* PlayerCamera;
 
-	UPROPERTY(EditAnywhere)
-	AActor* WorldPivot;
-
-
-
-	AActor* grabbedObject;
+	TWeakObjectPtr <AActor> grabbedObject;
 
 	void GrabObject(AActor* other);
 
 	void MoveX(float amount);
 	void MoveY(float amount);
 	void MoveDownUp(float amount);
+	void DoAction();
 
 	TWeakObjectPtr <AActor> touchedActor;
 
@@ -45,7 +41,4 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	
-	
 };
