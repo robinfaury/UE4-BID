@@ -44,12 +44,14 @@ FORCEINLINE bool Trace(
 
 // Sets default values
 APlayerPawn::APlayerPawn() :
-	PlayerCamera(CreateDefaultSubobject<UCameraComponent>("PlayerCamera"))
+	PlayerCamera(CreateDefaultSubobject<UCameraComponent>("PlayerCamera")),
+	PlayerCameraPivot(CreateDefaultSubobject<USceneComponent>("PlayerCameraPivot"))
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
-	PlayerCamera->SetupAttachment(RootComponent);
+	PlayerCameraPivot->SetupAttachment(RootComponent);
+	PlayerCamera->SetupAttachment(PlayerCameraPivot);
 
 }
 
@@ -60,12 +62,12 @@ void APlayerPawn::MoveX(float amount)
 
 void APlayerPawn::MoveY(float amount)
 {
-	PlayerCamera->SetWorldLocation(PlayerCamera->GetComponentLocation() + GetActorForwardVector()*amount*100.0f);
+	PlayerCameraPivot->SetWorldLocation(PlayerCameraPivot->GetComponentLocation() + GetActorForwardVector()*amount*100.0f);
 }  
 
 void APlayerPawn::MoveDownUp(float amount) 
 {
-	PlayerCamera->SetWorldLocation(PlayerCamera->GetComponentLocation() + FVector::UpVector*amount*100.0f);
+	PlayerCameraPivot->SetWorldLocation(PlayerCameraPivot->GetComponentLocation() + FVector::UpVector*amount*100.0f);
 }
 
 void APlayerPawn::DoAction() 

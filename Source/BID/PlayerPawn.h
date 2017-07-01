@@ -19,6 +19,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* PlayerCamera;
+	UPROPERTY(EditAnywhere)
+	USceneComponent* PlayerCameraPivot;
+
 
 	TWeakObjectPtr <AActor> grabbedObject;
 
