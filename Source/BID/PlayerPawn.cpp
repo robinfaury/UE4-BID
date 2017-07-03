@@ -1,4 +1,5 @@
 #include "PlayerPawn.h"
+#include "Alpinist.h"
 #include "Classes/Components/InputComponent.h"
 #include  "Classes/Kismet/KismetSystemLibrary.h"
 
@@ -74,24 +75,19 @@ void APlayerPawn::DoAction()
 {
 	if (grabbedObject != nullptr) 
 	{
-		Cast<UPrimitiveComponent>(grabbedObject->GetRootComponent())->SetSimulatePhysics(true);
-		grabbedObject->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-		grabbedObject = nullptr;
+
 	}
 	else
 	{
 		if (touchedActor != nullptr) // add something ! 
 		{
-			if (UPrimitiveComponent* P = Cast<UPrimitiveComponent>(touchedActor->GetRootComponent())) 
+			if (AAlpinist* P = Cast<AAlpinist>(touchedActor.Get()) )
 			{
-				P->SetSimulatePhysics(false);
-				touchedActor->AttachToComponent(PlayerCamera, FAttachmentTransformRules::KeepWorldTransform);
-				grabbedObject = touchedActor;
+				P->LauchBallon();
 			}
 		}
 	}
 }
-
 
 
 // Called when the game starts or when spawned
