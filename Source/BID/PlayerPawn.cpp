@@ -10,7 +10,7 @@ FORCEINLINE bool Trace(
 	const FVector& Start,
 	const FVector& End,
 	FHitResult& HitOut,
-	ECollisionChannel CollisionChannel = ECC_Visibility,
+	ECollisionChannel CollisionChannel = ECC_MAX,
 	bool ReturnPhysMat = false
 	) {
 	if (!World)
@@ -64,22 +64,22 @@ void APlayerPawn::MoveX(float amount)
 void APlayerPawn::MoveY(float amount)
 {
 	PlayerCameraPivot->SetWorldLocation(PlayerCameraPivot->GetComponentLocation() + GetActorForwardVector()*amount*100.0f);
-}  
+}
 
-void APlayerPawn::MoveDownUp(float amount) 
+void APlayerPawn::MoveDownUp(float amount)
 {
 	PlayerCameraPivot->SetWorldLocation(PlayerCameraPivot->GetComponentLocation() + FVector::UpVector*amount*100.0f);
 }
 
-void APlayerPawn::DoAction() 
+void APlayerPawn::DoAction()
 {
-	if (grabbedObject != nullptr) 
+	if (grabbedObject != nullptr)
 	{
 
 	}
 	else
 	{
-		if (touchedActor != nullptr) // add something ! 
+		if (touchedActor != nullptr) // add something !
 		{
 			if (AAlpinist* P = Cast<AAlpinist>(touchedActor.Get()) )
 			{
@@ -94,7 +94,7 @@ void APlayerPawn::DoAction()
 void APlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -107,7 +107,7 @@ void APlayerPawn::Tick(float DeltaTime)
 
 	FHitResult HitResult;
 
-	if (Trace(GetWorld(), this, Start, End, HitResult)) 
+	if (Trace(GetWorld(), this, Start, End, HitResult))
 	{
 		UKismetSystemLibrary::DrawDebugSphere( GetWorld(), HitResult.Location, 10.0f, 10.0f, FColor(0, 0, 200) );
 		touchedActor = HitResult.Actor;
